@@ -1,4 +1,20 @@
+$registryScript = ".\ps\registry.ps1"
+$debloatScript = ".\ps\debloatApp.ps1"
+
+Write-Host "The current directory is: $PWD"
+
 Write-Host "RUNNING OPTIMIZER SCRIPT" -ForegroundColor Green
+
+# Check if the current session is running as Administrator
+if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+    Write-Host "Elevating privileges to Administrator..." -ForegroundColor Yellow
+    
+    # Relaunch the script as administrator
+    Start-Process powershell.exe -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+    
+    # Exit the current non-elevated script session
+    Exit
+}
 
 # REGISTRY
 
@@ -14,7 +30,7 @@ $runRegistryKeyName = $runRegistryKeyInfo.VirtualKeyCode
 
 if ($runRegistryKeyName -eq 89) {
     Write-Host "Running registry editor script" -ForegroundColor Green
-    powershell.exe -ExecutionPolicy Bypass -File ".\registry.ps1"
+    powershell.exe -ExecutionPolicy Bypass -File $registryScript
 } else {
     Write-Host "Skipping registry editor script" -ForegroundColor Yellow
 }
@@ -33,7 +49,7 @@ $runDebloaterKeyName = $runDebloaterKeyInfo.VirtualKeyCode
 
 if ($runDebloaterKeyName -eq 89) {
     Write-Host "Opening debloater" -ForegroundColor Green
-    powershell.exe -ExecutionPolicy Bypass -File ".\debloatApp.ps1"
+    powershell.exe -ExecutionPolicy Bypass -File $debloatScript
 } else {
     Write-Host "Skipping debloat app" -ForegroundColor Yellow
 }
