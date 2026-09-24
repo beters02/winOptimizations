@@ -1,3 +1,4 @@
+@echo OFF
 SET ThisDir=%~dp0
 SET PowerShellScriptPath=%ThisDir%ps\main.ps1
 

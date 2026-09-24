@@ -48,7 +48,7 @@ $runDebloaterKeyInfo = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 $runDebloaterKeyName = $runDebloaterKeyInfo.VirtualKeyCode
 
 if ($runDebloaterKeyName -eq 89) {
-    Write-Host "Opening debloater" -ForegroundColor Green
+    Write-Host "Opening debloater app" -ForegroundColor Green
     powershell.exe -ExecutionPolicy Bypass -File $debloatScript
 } else {
     Write-Host "Skipping debloat app" -ForegroundColor Yellow
