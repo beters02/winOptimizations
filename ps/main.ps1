@@ -1,8 +1,7 @@
 $registryScript = ".\ps\registry.ps1"
 $debloatScript = ".\ps\debloatApp.ps1"
 
-Write-Host "The current directory is: $PWD"
-
+Write-Host ""
 Write-Host "RUNNING OPTIMIZER SCRIPT" -ForegroundColor Green
 
 # Check if the current session is running as Administrator
@@ -18,6 +17,7 @@ if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 
 # REGISTRY
 
+Write-Host ""
 Write-Host "Would you like to run the registry changes script? (y / N)" -ForegroundColor Cyan
 
 # Captures a single key press immediately
@@ -37,6 +37,7 @@ if ($runRegistryKeyName -eq 89) {
 
 # DEBLOAT
 
+Write-Host ""
 Write-Host "Would you like to open the debloater? (y / N)" -ForegroundColor Cyan
 
 # Captures a single key press immediately
@@ -54,4 +55,38 @@ if ($runDebloaterKeyName -eq 89) {
     Write-Host "Skipping debloat app" -ForegroundColor Yellow
 }
 
+Write-Host ""
 Write-Host "OPTIMIZER SCRIPT FINISHED!" -ForegroundColor Green
+Write-Host ""
+
+# Restart prompt
+Write-Host "You must restart your computer in order to apply the changes. Would you like to restart now? (y / N)" -ForegroundColor Cyan
+
+$restartKeyInfo = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+$restartKeyName = $restartKeyInfo.VirtualKeyCode
+
+if ($restartKeyName -eq 89) {
+    for ($i = 3; $i -gt 0; $i--) {
+        Write-Host -NoNewline "`rRestarting PC in $i seconds... " -ForegroundColor Green
+        Start-Sleep -Seconds 1
+    }
+
+    # Clear the countdown line
+    Write-Host "`r$(' ' * 50)`r" -NoNewline
+
+    Restart-Computer -Force
+} else {
+    Write-Host ""
+    Write-Host "Thank you for using winOptimizations!" -ForegroundColor Green
+    Write-Host ""
+
+    for ($i = 3; $i -gt 0; $i--) {
+        Write-Host -NoNewline "`rClosing window in $i seconds... " -ForegroundColor Green
+        Start-Sleep -Seconds 1
+    }
+
+    # Clear the countdown line
+    Write-Host "`r$(' ' * 50)`r" -NoNewline
+
+    Exit
+}
